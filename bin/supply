@@ -1,7 +1,8 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 set -e
 
+echo "---> here we are!"
 # Absolute path
 BIN_DIR=$(cd $(dirname $0) && pwd)
 
