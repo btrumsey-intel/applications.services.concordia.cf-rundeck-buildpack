@@ -3,6 +3,7 @@
 set -e
 
 BUILD_DIR=$1
+echo "Starting detect phase - ${BUILD_DIR}"
 
 # Make sure the developer has provided a rundeck-config.properties file
 if [[ -f ${BUILD_DIR}/server/config/rundeck-config.properties ]]; then
