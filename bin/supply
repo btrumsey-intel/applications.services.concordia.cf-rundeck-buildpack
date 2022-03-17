@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+
+set -e
+
+# Absolute path
+BIN_DIR=$(cd $(dirname $0) && pwd)
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+DEPS_DIR=$3
+INDEX=$4
+
+RUNDECK_APP_DIR=${BUILD_DIR}/rundeck
+
+source ${BIN_DIR}/../vars.sh
+
+echo "-----> Installing java"
+wget --no-check-certificate -q -c \
+        --header "Cookie: oraclelicense=accept-securebackup-cookie" \
+        ${JRE_URL} -O ${BIN_DIR}/jre.zip
+
+mkdir ${BUILD_DIR}/.java
+
+# Unpack jre content directly to .java in BUILD_DIR
+# -C is the directory, strip-components removes the top-level folder (jre_1.8.....)
+tar zxf ${BIN_DIR}/jre.zip -C ${BUILD_DIR}/.java --strip-components 1
+
+sleep 2
+
+##################################################################################
+# Download Rundeck
+##################################################################################
+echo "-----> Downloading rundeck"
+if [ -z ${RUNDECK_VERSION+x} ];
+then
+    echo "RUNDECK_VERSION is not set. Add it to your manifest.yml file (i.e. RUNDECK_VERSION: \"2.11.3\") to fix this error."
+    exit 1
+fi
+
+mkdir -p ${RUNDECK_APP_DIR}
+wget "${RUNDECK_DIST_URL}${RUNDECK_WAR}" -O ${RUNDECK_APP_DIR}/rundeck.war --no-check-certificate -q
+
+sleep 2
+
+
+##################################################################################
+# Install Rundeck
+##################################################################################
+echo "-----> Installing Rundeck"
+export PATH=$PATH:${BUILD_DIR}/.java/bin
+export RDECK_BASE=${RUNDECK_APP_DIR}
+
+java -jar ${RUNDECK_APP_DIR}/rundeck.war \
+        -b ${RUNDECK_APP_DIR} \
+        --installonly \
+        -d
+
+sleep 2
+
+##################################################################################
+# Install Plugins
+##################################################################################
+echo "-----> Installing plugins"
+RUNDECK_PLUGIN_FILE=rundeck-plugins.txt
+
+if [ -f "${BUILD_DIR}/$RUNDECK_PLUGIN_FILE" ]; then
+
+    RUNDECK_PLUGIN_DIR="${RUNDECK_APP_DIR}/libext"
+
+    mkdir -p "${RUNDECK_PLUGIN_DIR}"
+
+    # read file line by line even if there is no newline at the very end
+    # thanks https://stackoverflow.com/questions/10929453/read-a-file-line-by-line-assigning-the-value-to-a-variable#comment42383654_10929511
+    while read -r PLUGIN_URL || [[ -n ${PLUGIN_URL} ]]; do
+        echo "       Installing from $PLUGIN_URL"
+        wget ${PLUGIN_URL} --directory-prefix "${RUNDECK_PLUGIN_DIR}" --no-check-certificate -q
+
+    done < ${BUILD_DIR}/${RUNDECK_PLUGIN_FILE}
+else
+    echo "       No $RUNDECK_PLUGIN_FILE found, skipping..."
+fi
+
+sleep 2

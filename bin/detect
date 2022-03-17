@@ -1,0 +1,13 @@
+#!/bin/sh
+
+set -e
+
+BUILD_DIR=$1
+
+# Make sure the developer has provided a rundeck-config.properties file
+if [[ -f ${BUILD_DIR}/server/config/rundeck-config.properties ]]; then
+  echo "Rundeck!"
+  exit 0
+else
+  exit 1
+fi
