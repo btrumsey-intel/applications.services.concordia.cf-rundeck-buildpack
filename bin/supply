@@ -1,12 +1,12 @@
 #!/bin/bash
-#set -e
+set -e
 
 BUILD_DIR=$1
 CACHE_DIR=$2
 DEPS_DIR=$3
 INDEX=$4
 
-echo "---> here we are!"
+echo "---> here we are, let's start!"
 
 # Absolute path
 BIN_DIR=$(cd $(dirname $0) && pwd)
