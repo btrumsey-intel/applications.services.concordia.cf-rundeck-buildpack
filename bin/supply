@@ -54,7 +54,6 @@ export RDECK_BASE=${RUNDECK_APP_DIR}
 java -jar ${RUNDECK_APP_DIR}/rundeck.war \
      -b ${RUNDECK_APP_DIR} \
      --installonly \
-     -Xmx4g \
      -d
 
 sleep 2
