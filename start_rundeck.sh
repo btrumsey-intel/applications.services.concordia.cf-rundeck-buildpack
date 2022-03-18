@@ -17,7 +17,6 @@ fi
 echo "-----> Starting Rundeck"
 JAVA_CALL="java \
     -jar $RDECK_BASE/rundeck.war \
-    -Dserver.https.port=${PORT} \
     -Dserver.http.port=${PORT} \
     -b $RDECK_BASE \
     $SSL_ARG \
