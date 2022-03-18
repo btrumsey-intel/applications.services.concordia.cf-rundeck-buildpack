@@ -63,13 +63,13 @@ sleep 2
 ##################################################################################
 echo "-----> Installing SSL Certificates"
 RUNDECK_CA_FILE="ssl/ca.pem"
-#mkdir -p "${BUILD_DIR}/ssl"
+mkdir -p "${BUILD_DIR}/ssl"
 if [ -f "${BUILD_DIR}/${RUNDECK_CA_FILE}" ]; then
   keytool -importcert \
           -alias RundeckMySQLCaCert \
           -trustcacerts \
           -file ${BUILD_DIR}/${RUNDECK_CA_FILE} \
-          -keystore ${BUILD_DIR}/ssl \
+          -keystore ${BUILD_DIR}/ssl/mysql_truststore \
           -storepass abc123! \
           -v \
           -noprompt
