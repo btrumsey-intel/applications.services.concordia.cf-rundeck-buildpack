@@ -46,12 +46,15 @@ sleep 2
 # Install Rundeck
 ##################################################################################
 echo "-----> Installing Rundeck"
+# Put java in our PATH
 export PATH=$PATH:${BUILD_DIR}/.java/bin
+# RDECK_BASE defines the location of the install
 export RDECK_BASE=${RUNDECK_APP_DIR}
 
 java -jar ${RUNDECK_APP_DIR}/rundeck.war \
      -b ${RUNDECK_APP_DIR} \
      --installonly \
+     -Xmx2g \
      -d
 
 sleep 2
