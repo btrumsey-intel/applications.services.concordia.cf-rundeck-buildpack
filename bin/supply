@@ -89,13 +89,13 @@ if [ -f "$RUNDECK_CA_FILE" ]; then
           -noprompt \
           $DEBUG_ARG"
   keytool -importcert \
-          -keystore "$RUNDECK_TRUSTSTORE" \
           -alias RundeckMySQLCaCert \
-          -file "$RUNDECK_CA_FILE" \
-          -storepass abc123 \
           -trustcacerts \
-          -noprompt \
-          "$DEBUG_ARG"
+          -file $RUNDECK_CA_FILE \
+          -keystore $RUNDECK_TRUSTSTORE \
+          -storepass abc123! \
+          $DEBUG_ARG \
+          -noprompt
 fi
 
 sleep 2
