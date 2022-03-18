@@ -1,17 +1,15 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
 BUILD_DIR=$1
 CACHE_DIR=$2
 DEPS_DIR=$3
 INDEX=$4
 
-echo "---> here we are, let's start!"
-
 # Absolute path
 BIN_DIR=$(cd $(dirname $0) && pwd)
 
-
+echo "-----> Beginning build into directory ${BUILD_DIR}"
 RUNDECK_APP_DIR=${BUILD_DIR}/rundeck
 
 source ${BIN_DIR}/../vars.sh
