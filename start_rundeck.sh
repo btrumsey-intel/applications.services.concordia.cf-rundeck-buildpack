@@ -9,10 +9,9 @@ export PATH=$PATH:${BASE_PATH}/.java/bin
 
 echo "-----> Starting Rundeck"
 
-ADDITIONAL_ARGS="-Dserver.http.port=${PORT}"
-
 JAVA_CALL="java \
     -Dserver.http.port=${PORT} \
+    -Dserver.https.port=${PORT} \
     -jar $RDECK_BASE/rundeck.war \
     -b $RDECK_BASE \
     --skipinstall \
