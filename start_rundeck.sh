@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
 BASE_PATH=/home/vcap/app
 export RDECK_BASE=${BASE_PATH}/rundeck
@@ -8,7 +8,6 @@ echo "-----> Making java available"
 export PATH=$PATH:${BASE_PATH}/.java/bin
 
 echo "-----> Starting Rundeck"
-
 JAVA_CALL="java \
     -Dserver.http.port=${PORT} \
     -Dserver.https.port=${PORT} \

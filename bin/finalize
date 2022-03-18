@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
 # Absolute path
 BIN_DIR=$(cd $(dirname $0) && pwd)
@@ -9,12 +9,9 @@ CACHE_DIR=$2
 DEPS_DIR=$3
 INDEX=$4
 
-echo "----!!!!---> BIN_DIR is ${BIN_DIR}, BUILD_DIR is ${BUILD_DIR}"
-
 ##################################################################################
-# Replacing placeholder with env variables, but not in Rundeck folder
+# Function to replace env vars in a file with the syntax ${ENV_VAR}
 ##################################################################################
-
 replaceEnvVariables () {
     FILENAME=$1
     TEMP_FILENAME=${FILENAME}_replaced

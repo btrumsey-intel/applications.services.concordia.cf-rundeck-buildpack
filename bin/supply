@@ -12,18 +12,18 @@ BIN_DIR=$(cd $(dirname $0) && pwd)
 echo "-----> Beginning build into directory ${BUILD_DIR}"
 RUNDECK_APP_DIR=${BUILD_DIR}/rundeck
 
-source ${BIN_DIR}/../vars.sh
+source "${BIN_DIR}/../vars.sh"
 
 echo "-----> Installing java"
 wget --no-check-certificate -q -c \
      --header "Cookie: oraclelicense=accept-securebackup-cookie" \
-     ${JRE_URL} -O ${BIN_DIR}/jre.zip
+     "$JRE_URL" -O "${BIN_DIR}/jre.zip"
 
-mkdir ${BUILD_DIR}/.java
+mkdir "${BUILD_DIR}/.java"
 
 # Unpack jre content directly to .java in BUILD_DIR
 # -C is the directory, strip-components removes the top-level folder (jre_1.8.....)
-tar zxf ${BIN_DIR}/jre.zip -C ${BUILD_DIR}/.java --strip-components 1
+tar zxf "${BIN_DIR}/jre.zip" -C "${BUILD_DIR}/.java" --strip-components 1
 
 sleep 2
 
@@ -37,8 +37,8 @@ then
     exit 1
 fi
 
-mkdir -p ${RUNDECK_APP_DIR}
-wget ${RUNDECK_DIST_URL} -O ${RUNDECK_APP_DIR}/rundeck.war --no-check-certificate -q
+mkdir -p "$RUNDECK_APP_DIR"
+wget "$RUNDECK_DIST_URL" -O "${RUNDECK_APP_DIR}/rundeck.war" --no-check-certificate -q
 
 sleep 2
 
@@ -51,8 +51,8 @@ export PATH=$PATH:${BUILD_DIR}/.java/bin
 # RDECK_BASE defines the location of the install
 export RDECK_BASE=${RUNDECK_APP_DIR}
 
-java -jar ${RUNDECK_APP_DIR}/rundeck.war \
-     -b ${RUNDECK_APP_DIR} \
+java -jar "${RUNDECK_APP_DIR}/rundeck.war" \
+     -b "$RUNDECK_APP_DIR" \
      --installonly \
      -d
 
@@ -62,18 +62,22 @@ sleep 2
 # Install SSL Certificates
 ##################################################################################
 echo "-----> Installing SSL Certificates"
-RUNDECK_CA_FILE="ssl/ca.pem"
-mkdir -p "${BUILD_DIR}/ssl"
+RUNDECK_CA_DIR="${BUILD_DIR}/ssl"
+RUNDECK_CA_FILE="${RUNDECK_CA_DIR}/ca.pem"
+mkdir -p "$RUNDECK_CA_DIR"
+
 if [ -f "${BUILD_DIR}/${RUNDECK_CA_FILE}" ]; then
-  keytool -importcert \
+  keytool -keystore "${BUILD_DIR}/ssl/mysql_truststore" \
+          -file "$RUNDECK_CA_FILE" \
           -alias RundeckMySQLCaCert \
-          -trustcacerts \
-          -file ${BUILD_DIR}/${RUNDECK_CA_FILE} \
-          -keystore ${BUILD_DIR}/ssl/mysql_truststore \
           -storepass abc123! \
-          -v \
-          -noprompt
+          -trustcacerts \
+          -importcert \
+          -noprompt \
+          -v
 fi
+
+sleep 2
 
 ##################################################################################
 # Install Plugins
@@ -85,15 +89,15 @@ if [ -f "${BUILD_DIR}/$RUNDECK_PLUGIN_FILE" ]; then
 
     RUNDECK_PLUGIN_DIR="${RUNDECK_APP_DIR}/libext"
 
-    mkdir -p "${RUNDECK_PLUGIN_DIR}"
+    mkdir -p "$RUNDECK_PLUGIN_DIR"
 
     # read file line by line even if there is no newline at the very end
     # thanks https://stackoverflow.com/questions/10929453/read-a-file-line-by-line-assigning-the-value-to-a-variable#comment42383654_10929511
     while read -r PLUGIN_URL || [[ -n ${PLUGIN_URL} ]]; do
         echo "       Installing from $PLUGIN_URL"
-        wget ${PLUGIN_URL} --directory-prefix "${RUNDECK_PLUGIN_DIR}" --no-check-certificate -q
+        wget "$PLUGIN_URL" --directory-prefix "$RUNDECK_PLUGIN_DIR" --no-check-certificate -q
 
-    done < ${BUILD_DIR}/${RUNDECK_PLUGIN_FILE}
+    done < "${BUILD_DIR}/${RUNDECK_PLUGIN_FILE}"
 else
     echo "       No $RUNDECK_PLUGIN_FILE found, skipping..."
 fi
