@@ -16,8 +16,8 @@ source ${BIN_DIR}/../vars.sh
 
 echo "-----> Installing java"
 wget --no-check-certificate -q -c \
-        --header "Cookie: oraclelicense=accept-securebackup-cookie" \
-        ${JRE_URL} -O ${BIN_DIR}/jre.zip
+     --header "Cookie: oraclelicense=accept-securebackup-cookie" \
+     ${JRE_URL} -O ${BIN_DIR}/jre.zip
 
 mkdir ${BUILD_DIR}/.java
 
@@ -54,7 +54,7 @@ export RDECK_BASE=${RUNDECK_APP_DIR}
 java -jar ${RUNDECK_APP_DIR}/rundeck.war \
      -b ${RUNDECK_APP_DIR} \
      --installonly \
-     -Xmx2g \
+     -Xmx4g \
      -d
 
 sleep 2
