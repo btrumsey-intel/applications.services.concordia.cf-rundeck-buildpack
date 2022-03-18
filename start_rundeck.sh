@@ -16,11 +16,12 @@ fi
 
 echo "-----> Starting Rundeck"
 JAVA_CALL="java \
-    -jar $RDECK_BASE/rundeck.war \
     -Dserver.http.port=${PORT} \
-    -b $RDECK_BASE \
+    -Dserver.https.port=${PORT} \
     $SSL_ARG \
-    --skipinstall" \
+    -jar $RDECK_BASE/rundeck.war \
+    -b $RDECK_BASE \
+    --skipinstall"
 
 echo "-----> Executing $JAVA_CALL"
 ${JAVA_CALL}
