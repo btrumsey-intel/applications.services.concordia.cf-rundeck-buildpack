@@ -66,8 +66,9 @@ RUNDECK_CA_FILE="ssl/ca.pem"
 if [ -f "${BUILD_DIR}/${RUNDECK_CA_FILE}" ]; then
   keytool -importcert \
           -alias RundeckMySQLCaCert \
+          -trustcacerts \
           -file ${BUILD_DIR}/${RUNDECK_CA_FILE} \
-          -keystore truststore \
+          -keystore ${BUILD_DIR}/.java/lib/security/mysqlcerts \
           -storepass abc123! \
           -v \
           -noprompt

@@ -12,7 +12,7 @@ echo "-----> Starting Rundeck"
 JAVA_CALL="java \
     -Dserver.http.port=${PORT} \
     -Dserver.https.port=${PORT} \
-    -Djavax.net.ssl.trustStore=truststore \
+    -Djavax.net.ssl.trustStore=${BASE_PATH}/.java/lib/security/mysqlcerts \
     -Djavax.net.ssl.trustStorePassword=abc123! \
     -jar $RDECK_BASE/rundeck.war \
     -b $RDECK_BASE \
