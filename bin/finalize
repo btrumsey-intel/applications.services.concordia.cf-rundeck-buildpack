@@ -20,14 +20,14 @@ replaceEnvVariables () {
 
     # Replace all environment variables with syntax ${MY_ENV_VAR} with the value
     # thanks to https://stackoverflow.com/questions/5274343/replacing-environment-variables-in-a-properties-file
-    perl -p -e 's/\$\{([^}]+)\}/defined $ENV{$1} ? $ENV{$1} : $&/eg; s/\$\{([^}]+)\}//eg' ${FILENAME} > ${TEMP_FILENAME}
-    mv ${TEMP_FILENAME} ${FILENAME}
+    perl -p -e 's/\$\{([^}]+)\}/defined $ENV{$1} ? $ENV{$1} : $&/eg; s/\$\{([^}]+)\}//eg' "$FILENAME" > "$TEMP_FILENAME"
+    mv "$TEMP_FILENAME" "$FILENAME"
 }
 
 echo "-----> Replacing placeholder with env variables"
-cd ${BUILD_DIR}
+cd "${BUILD_DIR}"
 export -f replaceEnvVariables
-find -type f -not -path "./rundeck/*" -not -path "./.java/*" -exec bash -c 'replaceEnvVariables "$0"' {} \;
+find . -type f -not -path "./rundeck/*" -not -path "./.java/*" -exec bash -c 'replaceEnvVariables "$0"' {} \;
 
 sleep 2
 
@@ -38,8 +38,8 @@ echo "-----> Moving user config to rundeck"
 for DIRECTORY in */ ; do
     if [ "${DIRECTORY}" != "rundeck/" ] && [ "${DIRECTORY}" != ".java/" ] && [ "${DIRECTORY}" != "ssl/" ]; then
         echo "       - $DIRECTORY"
-        cp -r ${DIRECTORY} rundeck
-        rm -rf ${DIRECTORY}
+        cp -r "$DIRECTORY" rundeck
+        rm -rf "$DIRECTORY"
     fi
 done
 
@@ -48,7 +48,7 @@ sleep 2
 ##################################################################################
 # Setup ssh key
 ##################################################################################
-echo "-----> Setting ssh key"
+echo "-----> Setting SSH key"
 
 if [ -z ${RUNDECK_SSH_KEY+x} ];
 then
@@ -58,10 +58,10 @@ else
     SSH_KEY=${SSH_DIR}/id_rsa
     echo "       RUNDECK_SSH_KEY is set - creating /home/vcap/.ssh/id_rsa"
 
-    mkdir -p ${SSH_DIR}
-    chmod 700 ${SSH_DIR}
+    mkdir -p $SSH_DIR
+    chmod 700 $SSH_DIR
 
-    echo "${RUNDECK_SSH_KEY}" > ${SSH_KEY}
+    echo "$RUNDECK_SSH_KEY" > $SSH_KEY
     chmod 600 ${SSH_KEY}
 fi
 
@@ -113,7 +113,5 @@ sleep 2
 # Create start script
 ##################################################################################
 echo "-----> Creating start scripts"
-cp ${BIN_DIR}/../start_rundeck.sh ${BUILD_DIR}/start_rundeck.sh
-chmod +x ${BUILD_DIR}/start_rundeck.sh
-
-echo "-----> Done :)"
+cp "${BIN_DIR}/../start_rundeck.sh" "${BUILD_DIR}/start_rundeck.sh"
+chmod +x "${BUILD_DIR}/start_rundeck.sh"

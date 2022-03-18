@@ -60,7 +60,7 @@ into the browser).
 ### SSL
 
 If you need to add an SSL certificate (this may be required for your database connector) as part of the push, place
-the .pem file to `ssl/ca.pem`.  The certificate will be placed in the `/mysqlcacert` TrustStore.
+the .pem file to `ssl/ca.pem`.  The certificate will be placed in the `/home/var/app/ssl/mysql_truststore` TrustStore.
 
 ### Plugins
 
@@ -72,8 +72,10 @@ and install them.
 The following environment variables can be passed with your `cf push` command to control certain aspects of the
 buildpack.
 
-RUNDECK_VER
-RUNDECK_VERBOSE
+| Environment Variable | Description                                                                                             |
+| ---------------------|---------------------------------------------------------------------------------------------------------|
+| RUNDECK_VER          | Version of Rundeck to install.  Note that this must be the version number followed by the release date. |
+| RUNDECK_VERBOSE      | Adds a verbose switch to most commands to provide additional output during the build.                   |
 
 ### Sample manifest.yml file
 
@@ -89,3 +91,8 @@ applications:
     env:
       RUNDEC_VERSION: 3.4.10-20220118
 ```
+
+## Credits
+
+Credit to Springer Nature for their [cf-rundeck-buildpack](https://github.com/springernature/cf-rundeck-buildpack),
+which served as the starting point for this buildpack.

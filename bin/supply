@@ -51,10 +51,16 @@ export PATH=$PATH:${BUILD_DIR}/.java/bin
 # RDECK_BASE defines the location of the install
 export RDECK_BASE=${RUNDECK_APP_DIR}
 
+if [ "$BUILDPACK_VERBOSE" == "1" ]; then
+    DEBUG_ARG="-d"
+else
+    DEBUG_ARG=""
+fi
+
 java -jar "${RUNDECK_APP_DIR}/rundeck.war" \
      -b "$RUNDECK_APP_DIR" \
      --installonly \
-     -d
+     "$DEBUG_ARG"
 
 sleep 2
 
@@ -66,7 +72,12 @@ RUNDECK_CA_DIR="${BUILD_DIR}/ssl"
 RUNDECK_CA_FILE="${RUNDECK_CA_DIR}/ca.pem"
 mkdir -p "$RUNDECK_CA_DIR"
 
-if [ -f "${BUILD_DIR}/${RUNDECK_CA_FILE}" ]; then
+if [ "$BUILDPACK_VERBOSE" == "1" ]; then
+    DEBUG_ARG="-v"
+else
+    DEBUG_ARG=""
+fi
+if [ -f "$RUNDECK_CA_FILE" ]; then
   keytool -keystore "${BUILD_DIR}/ssl/mysql_truststore" \
           -file "$RUNDECK_CA_FILE" \
           -alias RundeckMySQLCaCert \
@@ -74,7 +85,7 @@ if [ -f "${BUILD_DIR}/${RUNDECK_CA_FILE}" ]; then
           -trustcacerts \
           -importcert \
           -noprompt \
-          -v
+          "$DEBUG_ARG"
 fi
 
 sleep 2
