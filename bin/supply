@@ -59,6 +59,19 @@ java -jar ${RUNDECK_APP_DIR}/rundeck.war \
 sleep 2
 
 ##################################################################################
+# Install SSL Certificates
+##################################################################################
+echo "-----> Installing SSL Certificates"
+RUNDECK_CA_FILE="ssl/ca.pem"
+if [ -f "${BUILD_DIR}/${RUNDECK_CA_FILE}" ]; then
+  keytool -importcert \
+          -alias RundeckMySQLCaCert \
+          -file ${BUILD_DIR}/${RUNDECK_CA_FILE} \
+          -keystore truststore \
+          -storepass abc123!
+fi
+
+##################################################################################
 # Install Plugins
 ##################################################################################
 echo "-----> Installing plugins"

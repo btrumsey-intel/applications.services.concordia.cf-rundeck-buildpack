@@ -39,7 +39,7 @@ sleep 2
 ##################################################################################
 echo "-----> Moving user config to rundeck"
 for DIRECTORY in */ ; do
-    if [ "${DIRECTORY}" != "rundeck/" ] && [ "${DIRECTORY}" != ".java/" ]; then
+    if [ "${DIRECTORY}" != "rundeck/" ] && [ "${DIRECTORY}" != ".java/" ] && [ "${DIRECTORY}" != "ssl/" ]; then
         echo "       - $DIRECTORY"
         cp -r ${DIRECTORY} rundeck
         rm -rf ${DIRECTORY}
