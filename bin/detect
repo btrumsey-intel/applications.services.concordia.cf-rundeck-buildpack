@@ -1,14 +1,13 @@
 #!/bin/bash
-
 set -e
 
 BUILD_DIR=$1
-echo "Starting detect phase - ${BUILD_DIR}"
 
 # Make sure the developer has provided a rundeck-config.properties file
-if [[ -f ${BUILD_DIR}/server/config/rundeck-config.properties ]]; then
-  echo "Rundeck!"
+if [ -f "${BUILD_DIR}/server/config/rundeck-config.properties" ]; then
+  echo "--------> rundeck-config.properties file found"
   exit 0
 else
+  echo "--------> Missing rundeck-config.properties file"
   exit 1
 fi
