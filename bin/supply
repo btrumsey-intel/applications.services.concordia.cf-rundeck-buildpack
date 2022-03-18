@@ -84,7 +84,7 @@ if [ -f "$RUNDECK_CA_FILE" ]; then
           -keystore $RUNDECK_TRUSTSTORE \
           -alias RundeckMySQLCaCert \
           -file $RUNDECK_CA_FILE \
-          -storepass abc123! \
+          -storepass abc123 \
           -trustcacerts \
           -noprompt \
           $DEBUG_ARG"
@@ -92,7 +92,7 @@ if [ -f "$RUNDECK_CA_FILE" ]; then
           -keystore "$RUNDECK_TRUSTSTORE" \
           -alias RundeckMySQLCaCert \
           -file "$RUNDECK_CA_FILE" \
-          -storepass abc123! \
+          -storepass abc123 \
           -trustcacerts \
           -noprompt \
           "$DEBUG_ARG"

@@ -15,7 +15,7 @@ fi
 
 if [ -f "${BASE_PATH}/ssl/mysql_truststore" ]; then
     SSL_ARG="-Djavax.net.ssl.trustStore=${BASE_PATH}/ssl/mysql_truststore \
-             -Djavax.net.ssl.trustStorePassword=abc123!"
+             -Djavax.net.ssl.trustStorePassword=abc123"
 else
     SSL_ARG=""
 fi
