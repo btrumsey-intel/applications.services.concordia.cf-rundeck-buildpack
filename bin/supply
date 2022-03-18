@@ -70,6 +70,7 @@ sleep 2
 echo "-----> Installing SSL Certificates"
 RUNDECK_CA_DIR="${BUILD_DIR}/ssl"
 RUNDECK_CA_FILE="${RUNDECK_CA_DIR}/ca.pem"
+RUNDECK_TRUSTSTORE="${RUNDECK_CA_DIR}/mysql_truststore"
 mkdir -p "$RUNDECK_CA_DIR"
 
 if [ "$BUILDPACK_VERBOSE" == "1" ]; then
@@ -78,9 +79,18 @@ else
     DEBUG_ARG=""
 fi
 if [ -f "$RUNDECK_CA_FILE" ]; then
-  keytool -keystore "${BUILD_DIR}/ssl/mysql_truststore" \
-          -file "$RUNDECK_CA_FILE" \
+  echo "Running "
+  echo "keytool -keystore $RUNDECK_TRUSTSTORE \
           -alias RundeckMySQLCaCert \
+          -file $RUNDECK_CA_FILE \
+          -storepass abc123! \
+          -trustcacerts \
+          -importcert \
+          -noprompt \
+          $DEBUG_ARG"
+  keytool -keystore "$RUNDECK_TRUSTSTORE" \
+          -alias RundeckMySQLCaCert \
+          -file "$RUNDECK_CA_FILE" \
           -storepass abc123! \
           -trustcacerts \
           -importcert \
