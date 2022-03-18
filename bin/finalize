@@ -9,6 +9,8 @@ CACHE_DIR=$2
 DEPS_DIR=$3
 INDEX=$4
 
+echo "----!!!!---> BIN_DIR is ${BIN_DIR}, BUILD_DIR is ${BUILD_DIR}"
+
 ##################################################################################
 # Replacing placeholder with env variables, but not in Rundeck folder
 ##################################################################################
@@ -17,7 +19,7 @@ replaceEnvVariables () {
     FILENAME=$1
     TEMP_FILENAME=${FILENAME}_replaced
 
-    echo "       handle $FILENAME"
+    echo "       - $FILENAME"
 
     # Replace all environment variables with syntax ${MY_ENV_VAR} with the value
     # thanks to https://stackoverflow.com/questions/5274343/replacing-environment-variables-in-a-properties-file
