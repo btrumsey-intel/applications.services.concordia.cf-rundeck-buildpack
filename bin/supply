@@ -68,7 +68,9 @@ if [ -f "${BUILD_DIR}/${RUNDECK_CA_FILE}" ]; then
           -alias RundeckMySQLCaCert \
           -file ${BUILD_DIR}/${RUNDECK_CA_FILE} \
           -keystore truststore \
-          -storepass abc123!
+          -storepass abc123! \
+          -v \
+          -noprompt
 fi
 
 ##################################################################################
