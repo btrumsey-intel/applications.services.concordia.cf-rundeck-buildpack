@@ -7,12 +7,6 @@ export RDECK_BASE=${BASE_PATH}/rundeck
 echo "-----> Making java available"
 export PATH=$PATH:${BASE_PATH}/.java/bin
 
-if [ "$BUILDPACK_VERBOSE" == "1" ]; then
-    DEBUG_ARG="-d"
-else
-    DEBUG_ARG=""
-fi
-
 if [ -f "${BASE_PATH}/ssl/mysql_truststore" ]; then
     SSL_ARG="-Djavax.net.ssl.trustStore=${BASE_PATH}/ssl/mysql_truststore \
              -Djavax.net.ssl.trustStorePassword=abc123"
@@ -26,9 +20,8 @@ JAVA_CALL="java \
     -Dserver.https.port=${PORT} \
     -Dserver.http.port=${PORT} \
     -b $RDECK_BASE \
-    --skipinstall \
     $SSL_ARG \
-    $DEBUG_ARG"
+    --skipinstall" \
 
 echo "-----> Executing $JAVA_CALL"
 ${JAVA_CALL}

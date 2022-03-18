@@ -79,15 +79,6 @@ else
     DEBUG_ARG=""
 fi
 if [ -f "$RUNDECK_CA_FILE" ]; then
-  echo "Running "
-  echo "keytool -importcert \
-          -keystore $RUNDECK_TRUSTSTORE \
-          -alias RundeckMySQLCaCert \
-          -file $RUNDECK_CA_FILE \
-          -storepass abc123 \
-          -trustcacerts \
-          -noprompt \
-          $DEBUG_ARG"
   keytool -importcert \
           -alias RundeckMySQLCaCert \
           -trustcacerts \
