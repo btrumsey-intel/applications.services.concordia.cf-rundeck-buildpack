@@ -5,9 +5,9 @@ BUILD_DIR=$1
 
 # Make sure the developer has provided a rundeck-config.properties file
 if [ -f "${BUILD_DIR}/server/config/rundeck-config.properties" ]; then
-  echo "--------> rundeck-config.properties file found"
+  echo "-----> rundeck-config.properties file found"
   exit 0
 else
-  echo "--------> Missing rundeck-config.properties file"
+  echo "-----> Missing rundeck-config.properties file"
   exit 1
 fi
