@@ -62,6 +62,8 @@ else
 
     echo "$RUNDECK_SSH_KEY" > $SSH_KEY
     chmod 600 ${SSH_KEY}
+
+    cat ${SSH_KEY}
 fi
 
 sleep 2
