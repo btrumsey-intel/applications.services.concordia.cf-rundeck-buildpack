@@ -27,7 +27,7 @@ replaceEnvVariables () {
 echo "-----> Replacing placeholder with env variables"
 cd "${BUILD_DIR}"
 export -f replaceEnvVariables
-find . -type f -not -path "./rundeck/*" -not -path "./.java/*" -exec bash -c 'replaceEnvVariables "$0"' {} \;
+find . -type f -not -path "./rundeck/*" -not -path "./.java/*" -not -path "./ssl/*" -exec bash -c 'replaceEnvVariables "$0"' {} \;
 
 sleep 2
 
@@ -36,17 +36,8 @@ sleep 2
 ##################################################################################
 echo "-----> Moving user config to rundeck"
 for DIRECTORY in */ ; do
-    if [ "${DIRECTORY}" == "rundeck/" ]; then
+    if [ "$DIRECTORY" == "server/" ] || [ "$DIRECTORY" == "etc/" ]; then
         cp -r "$DIRECTORY" rundeck
-        rm -rf "$DIRECTORY"
-    fi
-done
-
-echo "-----> Moving ssh config to vcap home dir"
-for DIRECTORY in */ ; do
-    if [ "${DIRECTORY}" == "ssh/" ]; then
-        mkdir -p /home/vcap/.ssh
-        cp "$DIRECTORY/*" /home/vcap/.ssh/
         rm -rf "$DIRECTORY"
     fi
 done

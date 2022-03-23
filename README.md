@@ -73,8 +73,9 @@ The following environment variables can be passed with your `cf push` command to
 buildpack.
 
 | Environment Variable | Description                                                                                             |
-| ---------------------|---------------------------------------------------------------------------------------------------------|
-| RUNDECK_VER          | Version of Rundeck to install.  Note that this must be the version number followed by the release date. |
+|----------------------|---------------------------------------------------------------------------------------------------------|
+| RUNDECK_SSH_KEY      | The private SSH key to be used for connecting to nodes.                                                 |
+| RUNDECK_VERSION      | Version of Rundeck to install.  Note that this must be the version number followed by the release date. |
 | RUNDECK_VERBOSE      | Adds a verbose switch to most commands to provide additional output during the build.                   |
 
 ### Sample manifest.yml file
